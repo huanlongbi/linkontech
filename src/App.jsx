@@ -360,7 +360,10 @@ export default function GeesyTechWebsite() {
             action="/"
             className="space-y-5"
           >
+            {/* 🔥 必须：Netlify识别 */}
             <input type="hidden" name="form-name" value="contact" />
+
+            {/* 🔥 防垃圾 */}
             <p className="hidden">
               <label>
                 Don’t fill this out if you’re human:
@@ -415,10 +418,18 @@ export default function GeesyTechWebsite() {
                   defaultValue=""
                   className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none"
                 >
-                  <option value="" disabled className="text-slate-900">Select a service</option>
-                  <option value="EMC Troubleshooting" className="text-slate-900">EMC Troubleshooting</option>
-                  <option value="EMC Testing" className="text-slate-900">EMC Testing</option>
-                  <option value="Compliance Support" className="text-slate-900">Compliance Support</option>
+                  <option value="" disabled className="text-slate-900">
+                    Select a service
+                  </option>
+                  <option value="EMC Troubleshooting" className="text-slate-900">
+                    EMC Troubleshooting
+                  </option>
+                  <option value="EMC Testing" className="text-slate-900">
+                    EMC Testing
+                  </option>
+                  <option value="Compliance Support" className="text-slate-900">
+                    Compliance Support
+                  </option>
                 </select>
               </div>
 
@@ -436,10 +447,12 @@ export default function GeesyTechWebsite() {
               </div>
             </div>
 
+            {/* 🔥 关键：checkbox 也必须在隐藏表单中存在 */}
             <label className="flex items-start gap-3 text-sm leading-6 text-blue-100">
               <input
                 name="consent"
                 type="checkbox"
+                value="yes"
                 required
                 className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10"
               />
@@ -447,10 +460,6 @@ export default function GeesyTechWebsite() {
                 I confirm this is a real business inquiry and agree that Geesy Tech may contact me regarding this project. *
               </span>
             </label>
-
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm leading-6 text-blue-100">
-              To reduce spam submissions, required business information must be completed before the form can be submitted.
-            </div>
 
             <button
               type="submit"
@@ -596,9 +605,8 @@ export default function GeesyTechWebsite() {
                 key={item.key}
                 type="button"
                 onClick={() => goToPage(item.key)}
-                className={`rounded-3xl border p-8 text-left shadow-sm transition hover:-translate-y-1 ${
-                  index === 2 ? "border-blue-900 bg-blue-900 text-white" : "border-slate-200 bg-slate-50"
-                }`}
+                className={`rounded-3xl border p-8 text-left shadow-sm transition hover:-translate-y-1 ${index === 2 ? "border-blue-900 bg-blue-900 text-white" : "border-slate-200 bg-slate-50"
+                  }`}
               >
                 <h3 className={`text-xl font-semibold ${index === 2 ? "text-white" : "text-slate-900"}`}>{item.title}</h3>
                 <p className={`mt-4 text-base leading-7 ${index === 2 ? "text-blue-100" : "text-slate-600"}`}>{item.desc}</p>
