@@ -336,70 +336,186 @@ function LinkonTechWebsiteInner() {
     </div>
   );
 
-  const ContactSection = ({ standalone = false }) => (
-    <section id="contact" className="bg-blue-950 text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:px-8">
-        <div>
-          <div className="mb-3 h-1 w-16 rounded-full bg-amber-400" />
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{standalone ? "Contact Us" : "Contact Linkon Tech"}</h2>
-          <div className="mt-8 space-y-4 text-sm text-blue-100">
-            <div><span className="text-2xl font-bold text-white mt-4 tracking-wide">Linkon Technology Co., Ltd.</span></div>
-            <div><span className="font-semibold text-white">Email:</span> Robin@linkontech.net</div>
-            <div><span className="font-semibold text-white">Address:</span> Tangtou Avenue, Shiyan Town, Bao’an District, Shenzhen, Guangdong, China</div>
-          </div>
-        </div>
+  const ContactSection = ({ standalone = false }) => {
+    const navigate = useNavigate();
 
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur">
-          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" className="space-y-5">
-            <input type="hidden" name="form-name" value="contact" />
-            <p className="hidden">
-              <label>
-                Don’t fill this out if you’re human:
-                <input name="bot-field" />
-              </label>
-            </p>
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-            <div className="grid gap-5 sm:grid-cols-2">
+      const form = e.target;
+      const formData = new FormData(form);
+
+      try {
+        await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formData).toString(),
+        });
+
+        form.reset();
+        navigate("/thank-you"); // 👉 成功后跳转
+      } catch (error) {
+        console.error("Form submission failed:", error);
+        alert("Submission failed. Please try again.");
+      }
+    };
+
+    return (
+      <section id="contact" className="bg-blue-950 text-white">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:px-8">
+
+          {/* 左侧信息 */}
+          <div>
+            <div className="mb-3 h-1 w-16 rounded-full bg-amber-400" />
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              {standalone ? "Contact Us" : "Contact Linkon Tech"}
+            </h2>
+
+            <div className="mt-8 space-y-4 text-sm text-blue-100">
               <div>
-                <label className="mb-2 block text-sm font-medium text-white">Name *</label>
-                <input name="name" type="text" required minLength={2} maxLength={60} autoComplete="name" className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none" placeholder="Your name" />
+                <span className="text-2xl font-bold text-white tracking-wide">
+                  Linkon Technology Co., Ltd.
+                </span>
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-white">Company</label>
-                <input name="company" type="text" maxLength={100} autoComplete="organization" className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none" placeholder="Company name" />
+                <span className="font-semibold text-white">Email:</span>{" "}
+                Robin@linkontech.net
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-white">Business Email *</label>
-                <input name="email" type="email" required autoComplete="email" className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none" placeholder="name@company.com" />
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium text-white">Service Needed *</label>
-                <select name="service" required defaultValue="" className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none">
-                  <option value="" disabled className="text-slate-900">Select a service</option>
-                  <option value="EMC Troubleshooting" className="text-slate-900">EMC Troubleshooting</option>
-                  <option value="EMC Testing" className="text-slate-900">EMC Testing</option>
-                  <option value="Compliance Support" className="text-slate-900">Compliance Support</option>
-                </select>
-              </div>
-              <div className="sm:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-white">Project Details *</label>
-                <textarea name="message" rows={6} required minLength={20} maxLength={2000} className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none" placeholder="Tell us your product type, current EMC issue, current test stage, and the support you need." />
+                <span className="font-semibold text-white">Address:</span>{" "}
+                Tangtou Avenue, Shiyan Town, Bao’an District, Shenzhen, Guangdong, China
               </div>
             </div>
+          </div>
 
-            <label className="flex items-start gap-3 text-sm leading-6 text-blue-100">
-              <input name="consent" type="checkbox" value="yes" required className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10" />
-              <span>I confirm this is a real business inquiry and agree that Linkon Tech may contact me regarding this project. *</span>
-            </label>
+          {/* 表单 */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur">
+            <form
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
+              <input type="hidden" name="form-name" value="contact" />
 
-            <button type="submit" className="inline-flex items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-semibold text-blue-950 shadow-sm transition hover:-translate-y-0.5">
-              Send Inquiry
-            </button>
-          </form>
+              {/* 防垃圾 */}
+              <p className="hidden">
+                <label>
+                  Don’t fill this out if you’re human:
+                  <input name="bot-field" />
+                </label>
+              </p>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white">
+                    Name *
+                  </label>
+                  <input
+                    name="name"
+                    type="text"
+                    required
+                    minLength={2}
+                    maxLength={60}
+                    className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white">
+                    Company
+                  </label>
+                  <input
+                    name="company"
+                    type="text"
+                    className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none"
+                    placeholder="Company name"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white">
+                    Business Email *
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none"
+                    placeholder="name@company.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-white">
+                    Service Needed *
+                  </label>
+                  <select
+                    name="service"
+                    required
+                    defaultValue=""
+                    className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white outline-none"
+                  >
+                    <option value="" disabled className="text-slate-900">
+                      Select a service
+                    </option>
+                    <option value="EMC Troubleshooting" className="text-slate-900">
+                      EMC Troubleshooting
+                    </option>
+                    <option value="EMC Testing" className="text-slate-900">
+                      EMC Testing
+                    </option>
+                    <option value="Compliance Support" className="text-slate-900">
+                      Compliance Support
+                    </option>
+                  </select>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label className="mb-2 block text-sm font-medium text-white">
+                    Project Details *
+                  </label>
+                  <textarea
+                    name="message"
+                    rows={6}
+                    required
+                    minLength={20}
+                    className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-white placeholder:text-blue-200 outline-none"
+                    placeholder="Describe your EMC issue..."
+                  />
+                </div>
+              </div>
+
+              <label className="flex items-start gap-3 text-sm text-blue-100">
+                <input
+                  name="consent"
+                  type="checkbox"
+                  value="yes"
+                  required
+                  className="mt-1 h-4 w-4"
+                />
+                <span>
+                  I confirm this is a real business inquiry and agree that Linkon Tech may contact me.
+                </span>
+              </label>
+
+              <button
+                type="submit"
+                className="w-full rounded-md bg-white px-6 py-3 text-sm font-semibold text-blue-950 hover:opacity-90"
+              >
+                Send Inquiry
+              </button>
+
+            </form>
+          </div>
         </div>
-      </div>
-    </section>
-  );
+      </section>
+    );
+  };
 
   const SideNav = ({ title, items }) => (
     <aside className="lg:w-64 shrink-0">
@@ -717,6 +833,48 @@ function LinkonTechWebsiteInner() {
     </>
   );
 
+  const ThankYouPage = () => {
+    const navigate = useNavigate()
+
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+        <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+
+          <h1 className="text-2xl font-semibold text-slate-900">
+            Thank You
+          </h1>
+
+          <p className="mt-4 text-slate-600">
+            Your inquiry has been submitted successfully.
+          </p>
+
+          <p className="mt-2 text-sm text-slate-500">
+            Our engineer will review your request and contact you within 24 hours.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+
+            <button
+              onClick={() => navigate("/contact")}
+              className="rounded-md border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            >
+              Back to Contact
+            </button>
+
+            <button
+              onClick={() => navigate("/services/emc-troubleshooting")}
+              className="rounded-md bg-blue-900 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
+            >
+              Explore Services
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-white text-slate-800">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -790,6 +948,7 @@ function LinkonTechWebsiteInner() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path={servicePages.emcTroubleshooting.path} element={<ServicePage data={servicePages.emcTroubleshooting} />} />
           <Route path={servicePages.emcTesting.path} element={<ServicePage data={servicePages.emcTesting} />} />
           <Route path={servicePages.complianceSupport.path} element={<ServicePage data={servicePages.complianceSupport} />} />
