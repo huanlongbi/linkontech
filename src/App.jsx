@@ -879,9 +879,25 @@ function LinkonTechWebsiteInner() {
     <div className="min-h-screen bg-white text-slate-800">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-          <button type="button" onClick={() => goTo("/")} className="text-left">
-            <div className="text-2xl font-bold tracking-tight text-slate-900">Linkon Tech</div>
-            <div className="text-xs uppercase tracking-[0.25em] text-slate-500">EMC Troubleshooting & Testing</div>
+          <button
+            type="button"
+            onClick={() => goTo("/")}
+            className="flex items-center gap-3 text-left"
+          >
+            <img
+              src="/images/logo100.png"
+              alt="Linkon Tech Logo"
+              className="h-10 w-10 object-contain"
+            />
+
+            <div>
+              <div className="text-lg font-bold tracking-tight text-slate-900">
+                Linkon Tech
+              </div>
+              <div className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                EMC Troubleshooting & Testing
+              </div>
+            </div>
           </button>
 
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex">
