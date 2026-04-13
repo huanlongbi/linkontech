@@ -891,7 +891,7 @@ function LinkonTechWebsiteInner() {
             />
 
             <div>
-              <div className="text-lg font-bold tracking-tight text-slate-900">
+              <div className="text-xl font-bold tracking-tight text-slate-900">
                 Linkon Tech
               </div>
               <div className="text-xs uppercase tracking-[0.25em] text-slate-500">
