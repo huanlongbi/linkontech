@@ -76,21 +76,21 @@ function LinkonTechWebsiteInner() {
       gallery: [
         {
           title: "Analysis Methods",
-          desc: "Replace with X-ray inspection, microsection analysis, and electrical verification photos.",
+          desc: "X-ray test system.",
           image:
-            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/X-ray test system.jpg",
         },
         {
           title: "Engineering Bench",
-          desc: "Use your real EMI debugging bench or failure analysis lab photos.",
+          desc: "Curve tracer tester.",
           image:
-            "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/Curve tracer tester.jpg",
         },
         {
           title: "Verification Support",
-          desc: "Display images that show how rectification suggestions are verified efficiently.",
+          desc: "Three coordinate measuring instrument.",
           image:
-            "https://images.unsplash.com/photo-1581092921461-eab10380bdc0?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/Three coordinate measuring instrument.jpg",
         },
       ],
     },
@@ -119,21 +119,21 @@ function LinkonTechWebsiteInner() {
       gallery: [
         {
           title: "EMC Chamber",
-          desc: "Replace with your semi-anechoic room, shielded room, or EMC chamber photos.",
+          desc: "3m Semi-anechoic Room(Radiated emission).",
           image:
-            "https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/3m Semi-anechoic Room(Radiated emission).jpg",
         },
         {
-          title: "Test Setup",
-          desc: "Use test bench, receiver, LISN, or chamber setup photos to enhance trust.",
+          title: "ELECTROMAGNETIC COMPATIBILITY",
+          desc: "Conducted emission Disturbancepower.",
           image:
-            "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/Conducted emission Disturbancepower.jpg",
         },
         {
-          title: "Verification Equipment",
-          desc: "Show the equipment that supports fast validation during EMC projects.",
+          title: "ELECTROMAGNETIC COMPATIBILITY",
+          desc: "EFT&Surge&DIPS&Ringwave.",
           image:
-            "https://images.unsplash.com/photo-1581092335397-9583eb92d232?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/EFT&Surge&DIPS&Ringwave.jpg",
         },
       ],
     },
@@ -162,21 +162,21 @@ function LinkonTechWebsiteInner() {
       gallery: [
         {
           title: "Safety & Compliance Resources",
-          desc: "Use your safety laboratory photos and equipment images here.",
+          desc: "Humidity and temperature test chamber.",
           image:
-            "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/Humidity and temperature test chamber.jpg",
         },
         {
           title: "Reliability Verification",
-          desc: "Display reliability chambers and supporting lab resources for product validation.",
+          desc: "Ingress Protection test-waterproof test.",
           image:
-            "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/Ingress Protection test-waterproof test.jpg",
         },
         {
-          title: "Integrated Support",
-          desc: "Show photos that demonstrate testing, troubleshooting, and compliance support working together.",
+          title: "Safety Test",
+          desc: "Safety and electrical performance test laboratory.",
           image:
-            "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80",
+            "/images/services/Safety and electrical performance test laboratory.jpg",
         },
       ],
     },
@@ -342,9 +342,6 @@ function LinkonTechWebsiteInner() {
         <div>
           <div className="mb-3 h-1 w-16 rounded-full bg-amber-400" />
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{standalone ? "Contact Us" : "Contact Linkon Tech"}</h2>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-100">
-            If you are facing EMC issues, repeated failures, or project schedule pressure, contact us to discuss your project with our engineers.
-          </p>
           <div className="mt-8 space-y-4 text-sm text-blue-100">
             <div><span className="text-2xl font-bold text-white mt-4 tracking-wide">Linkon Technology Co., Ltd.</span></div>
             <div><span className="font-semibold text-white">Email:</span> Robin@linkontech.net</div>
@@ -562,7 +559,7 @@ function LinkonTechWebsiteInner() {
 
         <section className="border-b border-slate-200 bg-slate-50">
           <div className="py-20">
-            <SectionTitle title="Laboratory Support Within This Service" desc="Instead of separating laboratory information into an independent generic tab, this page shows the images and resources that directly support the service itself. Replace the demo images with your real laboratory photos." />
+            <SectionTitle title="Laboratory Support Within This Service" desc="" />
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
               {data.gallery.map((item) => (
                 <div key={item.title} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -686,7 +683,7 @@ function LinkonTechWebsiteInner() {
             <button type="button" onClick={() => goTo("/about")} className="text-slate-600 transition hover:text-slate-900">About</button>
             <DropdownMenu label="Services" menuKey="services" items={serviceMenuItems} />
             <DropdownMenu label="Industries" menuKey="industries" items={industryMenuItems} />
-            <button type="button" onClick={() => goTo("/contact")} className="text-slate-600 transition hover:text-slate-900">Contact</button>
+            <button type="button" onClick={() => goTo("/contact")} className="text-slate-600 transition hover:text-slate-900">Contact us</button>
           </nav>
 
           <button type="button" onClick={() => setMobileMenuOpen((prev) => !prev)} className="inline-flex items-center justify-center rounded-lg border border-slate-200 p-2 text-slate-700 md:hidden" aria-label="Toggle navigation">
@@ -733,7 +730,7 @@ function LinkonTechWebsiteInner() {
                   )}
                 </div>
 
-                <button type="button" onClick={() => goTo("/contact")} className="block w-full rounded-lg px-3 py-3 text-left hover:bg-slate-50">Contact</button>
+                <button type="button" onClick={() => goTo("/contact")} className="block w-full rounded-lg px-3 py-3 text-left hover:bg-slate-50">Contact us</button>
               </div>
             </div>
           </div>
