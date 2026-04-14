@@ -1307,7 +1307,7 @@ function LinkonTechWebsiteInner() {
   };
 
   const BlogDetailPage = ({ slug }) => {
-    const navigate = useNavigate();
+
     const post = blogPosts.find((item) => item.slug === slug);
 
     if (!post) {
