@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet";
 import {
   BrowserRouter,
   Routes,
@@ -556,6 +557,13 @@ function LinkonTechWebsiteInner() {
 
   const HomePage = () => (
     <>
+      <Helmet>
+        <title>EMC Troubleshooting & EMI Fix | Linkon Tech</title>
+        <meta
+          name="description"
+          content="Professional EMC troubleshooting and EMI debugging services to help your product pass CE/FCC certification faster."
+        />
+      </Helmet>
       <section className="relative overflow-hidden border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(30,58,138,0.08),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(199,154,43,0.10),transparent_28%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:px-8 lg:py-28">
@@ -662,67 +670,109 @@ function LinkonTechWebsiteInner() {
   );
 
   const ServicePage = ({ data }) => (
-    <div className="mx-auto max-w-7xl px-6 py-16 lg:flex lg:gap-12 lg:px-8">
-      <SideNav title="Services" items={serviceMenuItems} />
-      <div className="min-w-0 flex-1">
-        <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
-          <div className="px-0 py-10">
-            <div className="max-w-4xl">
-              <div className="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm">{data.heroTag}</div>
-              <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">{data.title}</h1>
-              <p className="mt-6 text-lg leading-8 text-slate-600">{data.subtitle}</p>
-            </div>
-          </div>
-        </section>
+    <>
+      <Helmet>
+        <title>{`${data.title} | Linkon Tech`}</title>
+        <meta
+          name="description"
+          content={data.intro}
+        />
+      </Helmet>
 
-        <section className="border-b border-slate-200 bg-white">
-          <div className="py-20">
-            <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
-              <div><SectionTitle title="Service Overview" desc={data.intro} /></div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {data.highlights.map((item) => (
-                  <div key={item} className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm font-medium text-slate-700 shadow-sm">{item}</div>
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:flex lg:gap-12 lg:px-8">
+        <SideNav title="Services" items={serviceMenuItems} />
+        <div className="min-w-0 flex-1">
+          <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
+            <div className="px-0 py-10">
+              <div className="max-w-4xl">
+                <div className="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm">
+                  {data.heroTag}
+                </div>
+                <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+                  {data.title}
+                </h1>
+                <p className="mt-6 text-lg leading-8 text-slate-600">
+                  {data.subtitle}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="border-b border-slate-200 bg-white">
+            <div className="py-20">
+              <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
+                <div>
+                  <SectionTitle title="Service Overview" desc={data.intro} />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {data.highlights.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm font-medium text-slate-700 shadow-sm"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="border-b border-slate-200 bg-slate-50">
+            <div className="py-20">
+              <SectionTitle title="Laboratory Support Within This Service" desc="" />
+              <div className="mt-12 grid gap-6 lg:grid-cols-3">
+                {data.gallery.map((item) => (
+                  <div
+                    key={item.title}
+                    className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-60 w-full object-cover transition duration-500 hover:scale-105"
+                    />
+                    <div className="p-6">
+                      <h3 className="text-lg font-semibold text-slate-900">
+                        {item.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-7 text-slate-600">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="border-b border-slate-200 bg-slate-50">
-          <div className="py-20">
-            <SectionTitle title="Laboratory Support Within This Service" desc="" />
-            <div className="mt-12 grid gap-6 lg:grid-cols-3">
-              {data.gallery.map((item) => (
-                <div key={item.title} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                  <img src={item.image} alt={item.title} className="h-60 w-full object-cover transition duration-500 hover:scale-105" />
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-7 text-slate-600">{item.desc}</p>
+          <section className="border-b border-slate-200 bg-white">
+            <div className="py-20">
+              <SectionTitle
+                title="Support Scope"
+                desc="This service is positioned as practical engineering support combined with verification capability, so the site should present clear working scope rather than empty marketing claims."
+              />
+              <div className="mt-12 grid gap-6 md:grid-cols-2">
+                {data.scope.map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm"
+                  >
+                    <div className="text-base font-semibold text-slate-900">
+                      {item}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-
-        <section className="border-b border-slate-200 bg-white">
-          <div className="py-20">
-            <SectionTitle title="Support Scope" desc="This service is positioned as practical engineering support combined with verification capability, so the site should present clear working scope rather than empty marketing claims." />
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
-              {data.scope.map((item) => (
-                <div key={item} className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm">
-                  <div className="text-base font-semibold text-slate-900">{item}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 
   const IndustryPage = ({ data }) => {
+
     const industryImages = {
       "Home Appliances": [
         {
@@ -777,74 +827,91 @@ function LinkonTechWebsiteInner() {
     const images = industryImages[data.title] || [];
 
     return (
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:flex lg:gap-12 lg:px-8">
-        <SideNav title="Industries" items={industryMenuItems} />
+      <>
+        <Helmet>
+          <title>{`${data.title} EMC Solutions | Linkon Tech`}</title>
+          <meta
+            name="description"
+            content={data.sectionDesc}
+          />
+        </Helmet>
 
-        <div className="min-w-0 flex-1">
-          <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
-            <div className="px-0 py-10">
-              <div className="max-w-4xl">
-                <div className="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm">
-                  {data.heroTag}
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:flex lg:gap-12 lg:px-8">
+          <SideNav title="Industries" items={industryMenuItems} />
+
+          <div className="min-w-0 flex-1">
+            <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
+              <div className="px-0 py-10">
+                <div className="max-w-4xl">
+                  <div className="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm">
+                    {data.heroTag}
+                  </div>
+                  <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+                    {data.title}
+                  </h1>
+                  <p className="mt-6 text-lg leading-8 text-slate-600">
+                    {data.intro}
+                  </p>
                 </div>
-                <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-                  {data.title}
-                </h1>
-                <p className="mt-6 text-lg leading-8 text-slate-600">
-                  {data.intro}
-                </p>
               </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="border-b border-slate-200 bg-white">
-            <div className="py-20">
-              <SectionTitle
-                title={data.sectionTitle}
-                desc={data.sectionDesc}
-              />
+            <section className="border-b border-slate-200 bg-white">
+              <div className="py-20">
+                <SectionTitle
+                  title={data.sectionTitle}
+                  desc={data.sectionDesc}
+                />
 
-              {images.length > 0 && (
+                {images.length > 0 && (
+                  <div className="mt-12 grid gap-6 md:grid-cols-2">
+                    {images.map((image) => (
+                      <div
+                        key={image.src}
+                        className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm"
+                      >
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="h-64 w-full object-cover"
+                        />
+                        <div className="p-4 text-sm leading-6 text-slate-600">
+                          {image.caption}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 <div className="mt-12 grid gap-6 md:grid-cols-2">
-                  {images.map((image) => (
+                  {data.points.map((item) => (
                     <div
-                      key={image.src}
-                      className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm"
+                      key={item}
+                      className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm"
                     >
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="h-64 w-full object-cover"
-                      />
-                      <div className="p-4 text-sm leading-6 text-slate-600">
-                        {image.caption}
+                      <div className="text-base font-semibold text-slate-900">
+                        {item}
                       </div>
                     </div>
                   ))}
                 </div>
-              )}
-
-              <div className="mt-12 grid gap-6 md:grid-cols-2">
-                {data.points.map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm"
-                  >
-                    <div className="text-base font-semibold text-slate-900">
-                      {item}
-                    </div>
-                  </div>
-                ))}
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
-      </div>
+      </>
     );
   };
 
   const AboutPage = () => (
     <>
+      <Helmet>
+        <title>About Linkon Tech | EMC Engineering Support</title>
+        <meta
+          name="description"
+          content="Learn about Linkon Tech’s EMC engineering experience, laboratory resources, and technical capabilities."
+        />
+      </Helmet>
       <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
           <div className="max-w-4xl">
@@ -923,6 +990,13 @@ function LinkonTechWebsiteInner() {
 
   const ContactPage = () => (
     <>
+      <Helmet>
+        <title>Contact Us | Linkon Tech</title>
+        <meta
+          name="description"
+          content="Contact Linkon Tech for EMC troubleshooting, EMI debugging, and compliance support."
+        />
+      </Helmet>
       <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
           <div className="max-w-4xl">
@@ -939,46 +1013,52 @@ function LinkonTechWebsiteInner() {
   );
 
   const ThankYouPage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
-        <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+      <>
+        <Helmet>
+          <title>Thank You | Linkon Tech</title>
+          <meta
+            name="description"
+            content="Your inquiry has been submitted successfully."
+          />
+        </Helmet>
 
-          <h1 className="text-2xl font-semibold text-slate-900">
-            Thank You
-          </h1>
+        <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+          <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
+            <h1 className="text-2xl font-semibold text-slate-900">
+              Thank You
+            </h1>
 
-          <p className="mt-4 text-slate-600">
-            Your inquiry has been submitted successfully.
-          </p>
+            <p className="mt-4 text-slate-600">
+              Your inquiry has been submitted successfully.
+            </p>
 
-          <p className="mt-2 text-sm text-slate-500">
-            Our engineer will review your request and contact you within 24 hours.
-          </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Our engineer will review your request and contact you within 24 hours.
+            </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <button
+                onClick={() => navigate("/contact")}
+                className="rounded-md border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              >
+                Back to Contact
+              </button>
 
-            <button
-              onClick={() => navigate("/contact")}
-              className="rounded-md border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
-            >
-              Back to Contact
-            </button>
-
-            <button
-              onClick={() => navigate("/services/emc-troubleshooting")}
-              className="rounded-md bg-blue-900 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
-            >
-              Explore Services
-            </button>
-
+              <button
+                onClick={() => navigate("/services/emc-troubleshooting")}
+                className="rounded-md bg-blue-900 px-5 py-2 text-sm font-medium text-white hover:opacity-90"
+              >
+                Explore Services
+              </button>
+            </div>
           </div>
-
         </div>
-      </div>
-    )
-  }
+      </>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-white text-slate-800">
