@@ -9,6 +9,179 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+const blogPosts = [
+  {
+    slug: "emc-test-failure",
+    title: "Why Your Product Fails EMC Test (And How to Fix It Fast)",
+    desc: "A practical engineering view of common EMC failure mechanisms and faster debug priorities.",
+    image: "/images/blog/emc-test-failure.jpg",
+    publishedAt: "2026-04-14",
+    author: "Linkon Tech",
+    content: `
+EMC failures are often treated as “test lab problems”, but in most cases they are design and integration problems that become visible in the lab.
+
+From an engineering perspective, first-time EMC failure is usually caused by one or more of the following:
+
+1. Excessive conducted noise on the power input
+Typical causes:
+- high di/dt switching current loops
+- insufficient differential-mode filtering
+- common-mode current returning through unintended paths
+- poor placement of X/Y capacitors or common-mode choke
+
+2. Radiated emission from cables or structural metal parts
+Typical causes:
+- cable harness acting as an antenna
+- noisy reference plane discontinuity
+- floating metal structure
+- high-frequency current coupling from PCB to enclosure
+
+3. PCB layout problems
+Typical causes:
+- switching node copper area too large
+- poor decoupling capacitor placement
+- long return paths
+- analog and noisy digital/power sections not properly partitioned
+
+4. Grounding and bonding mistakes
+Typical causes:
+- functional ground and chassis ground not clearly managed
+- shield termination done at the wrong location
+- impedance of return path too high at high frequency
+
+5. Immunity failure instead of emission failure
+Typical causes:
+- insufficient margin in reset, clock, or communication circuits
+- weak surge / EFT protection
+- poor cable entry filtering
+- excessive sensitivity in MCU I/O or analog front end
+
+A faster debug method is to avoid changing many things at once. A better sequence is:
+
+Step 1:
+Confirm whether the dominant problem is conducted emission, radiated emission, or immunity.
+
+Step 2:
+Identify the strongest noise path:
+- source
+- coupling path
+- victim
+
+Step 3:
+Use quick verification methods before redesign:
+- temporary ferrite
+- temporary shielding
+- alternative grounding point
+- extra decoupling / RC damping
+- cable routing change
+
+Step 4:
+Only after the dominant mechanism is confirmed, modify the PCB, filter topology, grounding, or structure.
+
+In practice, many repeated failures happen because teams jump directly into “adding more filter parts” without identifying whether the problem is differential mode, common mode, near-field coupling, or structural radiation.
+
+The fastest way to fix EMC is not random rectification. It is identifying the dominant coupling mechanism first, then verifying the effectiveness of each change with controlled testing.
+`,
+  },
+  {
+    slug: "emi-filter-design",
+    title: "EMI Filter Design Mistakes That Cause Compliance Failure",
+    desc: "Common filter-design errors in switched power systems and how they affect conducted emission results.",
+    image: "/images/blog/emi-filter-design.jpg",
+    publishedAt: "2026-04-14",
+    author: "Linkon Tech",
+    content: `
+Many EMI filter problems are not caused by the component values themselves, but by incorrect topology choice, poor placement, or misunderstanding of the real noise mechanism.
+
+A filter can look correct on the schematic and still fail badly in the lab.
+
+The most common mistakes are below.
+
+1. Treating all noise as the same
+Engineers often add an EMI filter without first separating:
+- differential-mode noise
+- common-mode noise
+
+This is a basic but critical mistake.
+
+If the dominant noise is common mode, increasing only differential-mode capacitance may have little effect.
+If the dominant noise is differential mode, changing common-mode choke selection alone may not solve the problem.
+
+2. Placing filter components too far from the noise boundary
+An EMI filter is not only a circuit function. It is also a physical boundary.
+
+Typical mistakes:
+- filter stage placed too far from the connector
+- long copper routing before or after the filter
+- noisy traces running parallel to clean input traces
+
+This allows high-frequency current to bypass the intended filter path.
+
+3. Poor return-path control
+At high frequency, current returns through the path of lowest impedance, not the path that “looks correct” on the schematic.
+
+Typical mistakes:
+- Y-capacitor return path too long
+- chassis reference not low impedance enough
+- common-mode current forced through functional ground area
+
+This often creates unstable results where one filter change helps one band but makes another band worse.
+
+4. Wrong common-mode choke selection
+A common-mode choke is not a universal solution.
+
+Typical mistakes:
+- focusing only on inductance value
+- ignoring impedance vs frequency curve
+- ignoring saturation behavior under operating current
+- choosing a part with poor performance in the actual failure band
+
+The result is often a filter that looks strong on paper but gives limited improvement at the real problem frequency.
+
+5. Ignoring parasitics and self-resonance
+Capacitors and inductors stop behaving ideally at higher frequencies.
+
+Typical mistakes:
+- assuming bigger capacitance is always better
+- using parts without checking self-resonant frequency
+- creating unwanted resonance between filter stages
+
+This can introduce a new peak instead of reducing the original one.
+
+6. PCB layout undermining the filter
+Even a correct filter design can fail if layout is weak.
+
+Typical layout problems:
+- large loop area around switching node
+- input and output of the filter too close together
+- insufficient isolation between noisy and clean sides
+- shared return impedance
+
+In many failures, the real improvement comes from layout correction rather than replacing filter components.
+
+A more effective filter-debug process is:
+
+Step 1:
+Measure and identify whether common-mode or differential-mode noise is dominant.
+
+Step 2:
+Check the real current path and physical placement of the filter.
+
+Step 3:
+Evaluate component behavior at the failure frequency, not only nominal value.
+
+Step 4:
+Verify layout coupling and return path continuity.
+
+Step 5:
+Only then optimize component values or topology.
+
+Good EMI filter design is not “adding more parts”.
+It is matching the filter structure to the actual noise source, coupling path, frequency range, and mechanical layout.
+`,
+  },
+];
+
 function LinkonTechWebsiteInner() {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -52,6 +225,7 @@ function LinkonTechWebsiteInner() {
   const goTo = (path) => navigate(path);
 
   const servicePages = {
+
     emcTroubleshooting: {
       path: "/services/emc-troubleshooting",
       heroTag: "Service / EMC Troubleshooting",
@@ -290,7 +464,11 @@ function LinkonTechWebsiteInner() {
     { key: "powerSupplySystems", title: "Power Supply Systems", path: industryPages.powerSupplySystems.path },
     { key: "automotive", title: "Automotive", path: industryPages.automotive.path },
   ];
-
+  const blogMenuItems = [
+    { key: "all", title: "All Articles", path: "/blog" },
+    { key: "emc-test-failure", title: "EMC Test Failure Guide", path: "/blog/emc-test-failure" },
+    { key: "emi-filter-design", title: "EMI Filter Design", path: "/blog/emi-filter-design" },
+  ];
   const strengths = [
     { path: "/about", title: "Experienced EMC Engineers", desc: "We focus on practical rectification support, not just pass/fail reporting." },
     { path: "/about", title: "Laboratory Resource Support", desc: "Testing and verification resources help confirm improvement effectiveness quickly." },
@@ -1059,7 +1237,174 @@ function LinkonTechWebsiteInner() {
       </>
     );
   };
+  const BlogPage = () => {
+    const navigate = useNavigate();
 
+    return (
+      <>
+        <Helmet>
+          <title>EMC Blog | Linkon Tech</title>
+          <meta
+            name="description"
+            content="EMC troubleshooting insights, EMI solutions, and compliance tips from Linkon Tech."
+          />
+        </Helmet>
+
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:flex lg:gap-12 lg:px-8">
+          <SideNav title="Blog" items={blogMenuItems} />
+
+          <div className="min-w-0 flex-1">
+            <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
+              <div className="px-0 py-10">
+                <div className="max-w-4xl">
+                  <div className="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm">
+                    Blog
+                  </div>
+                  <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+                    EMC Insights
+                  </h1>
+                  <p className="mt-6 text-lg leading-8 text-slate-600">
+                    Practical EMC troubleshooting notes, EMI design insights, and compliance-oriented engineering articles.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section className="bg-white">
+              <div className="py-20">
+                <div className="grid gap-6 md:grid-cols-2">
+                  {blogPosts.map((post) => (
+                    <button
+                      key={post.slug}
+                      type="button"
+                      onClick={() => navigate(`/blog/${post.slug}`)}
+                      className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 text-left shadow-sm transition hover:-translate-y-1 hover:border-slate-300"
+                    >
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="h-56 w-full object-cover"
+                      />
+                      <div className="p-8">
+                        {/* 发布时间 */}
+                        <p className="text-sm font-medium text-slate-500">
+                          {post.publishedAt}
+                        </p>
+
+                        {/* 标题 */}
+                        <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+                          {post.title}
+                        </h2>
+
+                        {/* 描述 */}
+                        <p className="mt-4 text-base leading-7 text-slate-600">
+                          {post.desc}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const BlogDetailPage = ({ slug }) => {
+    const navigate = useNavigate();
+    const post = blogPosts.find((item) => item.slug === slug);
+
+    if (!post) {
+      return (
+        <div className="mx-auto max-w-4xl px-6 py-20 lg:px-8">
+          <h1 className="text-3xl font-bold text-slate-900">Article Not Found</h1>
+          <button
+            type="button"
+            onClick={() => navigate("/blog")}
+            className="mt-6 rounded-md bg-blue-900 px-5 py-2 text-sm font-medium text-white"
+          >
+            Back to Blog
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <Helmet>
+          <title>{`${post.title} | Linkon Tech`}</title>
+          <meta name="description" content={post.desc} />
+        </Helmet>
+
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:flex lg:gap-12 lg:px-8">
+          <SideNav title="Blog" items={blogMenuItems} />
+
+          <div className="min-w-0 flex-1">
+            <section className="border-b border-slate-200 bg-gradient-to-br from-white via-slate-50 to-slate-100">
+              <div className="px-0 py-10">
+                <div className="max-w-4xl">
+                  <div className="inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 shadow-sm">
+                    Blog Article
+                  </div>
+                  <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+                    {post.title}
+                  </h1>
+                  <p className="mt-4 text-sm text-slate-500">
+                    Published on {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })} · By {post.author}
+                  </p>
+                  <p className="mt-6 text-lg leading-8 text-slate-600">
+                    {post.desc}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section className="bg-white">
+              <div className="py-20">
+                <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="h-[420px] w-full object-cover"
+                  />
+                </div>
+
+                <article className="mt-12 max-w-none">
+                  <div className="whitespace-pre-line text-base leading-8 text-slate-700">
+                    {post.content}
+                  </div>
+                </article>
+
+                <div className="mt-12 rounded-3xl bg-blue-900 p-8 text-white">
+                  <h3 className="text-2xl font-semibold">
+                    Need help with EMC troubleshooting?
+                  </h3>
+                  <p className="mt-3 text-blue-100">
+                    Contact Linkon Tech for practical engineering support, EMI debugging, and verification assistance.
+                  </p>
+                  <div className="mt-6">
+                    <button
+                      type="button"
+                      onClick={() => navigate("/contact")}
+                      className="rounded-md bg-white px-5 py-2 text-sm font-medium text-blue-900"
+                    >
+                      Contact Us
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </>
+    );
+  };
   return (
     <div className="min-h-screen bg-white text-slate-800">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -1090,6 +1435,7 @@ function LinkonTechWebsiteInner() {
             <button type="button" onClick={() => goTo("/about")} className="text-slate-600 transition hover:text-slate-900">About</button>
             <DropdownMenu label="Services" menuKey="services" items={serviceMenuItems} />
             <DropdownMenu label="Industries" menuKey="industries" items={industryMenuItems} />
+            <button type="button" onClick={() => goTo("/blog")} className="text-slate-600 transition hover:text-slate-900">Blog</button>
             <button type="button" onClick={() => goTo("/contact")} className="text-slate-600 transition hover:text-slate-900">Contact us</button>
           </nav>
 
@@ -1104,6 +1450,7 @@ function LinkonTechWebsiteInner() {
               <div className="space-y-2 text-sm font-medium text-slate-700">
                 <button type="button" onClick={() => goTo("/")} className="block w-full rounded-lg px-3 py-3 text-left hover:bg-slate-50">Home</button>
                 <button type="button" onClick={() => goTo("/about")} className="block w-full rounded-lg px-3 py-3 text-left hover:bg-slate-50">About</button>
+                <button type="button" onClick={() => goTo("/blog")} className="block w-full rounded-lg px-3 py-3 text-left hover:bg-slate-50">Blog</button>
 
                 <div className="rounded-lg border border-slate-200">
                   <button type="button" onClick={() => setMobileServicesOpen((prev) => !prev)} className="flex w-full items-center justify-between px-3 py-3 text-left">
@@ -1149,6 +1496,9 @@ function LinkonTechWebsiteInner() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/emc-test-failure" element={<BlogDetailPage slug="emc-test-failure" />} />
+          <Route path="/blog/emi-filter-design" element={<BlogDetailPage slug="emi-filter-design" />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path={servicePages.emcTroubleshooting.path} element={<ServicePage data={servicePages.emcTroubleshooting} />} />
           <Route path={servicePages.emcTesting.path} element={<ServicePage data={servicePages.emcTesting} />} />
