@@ -7,186 +7,13 @@ import {
   Link,
   useLocation,
   useNavigate,
+  useParams,
 } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { getAllPosts, getPostBySlug } from "./lib/blog";
 
-const blogPosts = [
-  {
-    slug: "emc-test-failure",
-    seoTitle: "Why Products Fail EMC Tests | Linkon Tech",
-    seoDescription:
-      "Learn the most common causes of EMC test failure, including conducted emission, radiated emission, PCB layout, grounding, and immunity problems.",
-    title: "Why Your Product Fails EMC Test (And How to Fix It Fast)",
-    desc: "A practical engineering view of common EMC failure mechanisms and faster debug priorities.",
-    image: "/images/blog/emc-test-failure.jpg",
-    publishedAt: "2026-04-14",
-    author: "Linkon Tech",
-    content: `
-EMC failures are often treated as “test lab problems”, but in most cases they are design and integration problems that become visible in the lab.
-
-From an engineering perspective, first-time EMC failure is usually caused by one or more of the following:
-
-1. Excessive conducted noise on the power input
-Typical causes:
-- high di/dt switching current loops
-- insufficient differential-mode filtering
-- common-mode current returning through unintended paths
-- poor placement of X/Y capacitors or common-mode choke
-
-2. Radiated emission from cables or structural metal parts
-Typical causes:
-- cable harness acting as an antenna
-- noisy reference plane discontinuity
-- floating metal structure
-- high-frequency current coupling from PCB to enclosure
-
-3. PCB layout problems
-Typical causes:
-- switching node copper area too large
-- poor decoupling capacitor placement
-- long return paths
-- analog and noisy digital/power sections not properly partitioned
-
-4. Grounding and bonding mistakes
-Typical causes:
-- functional ground and chassis ground not clearly managed
-- shield termination done at the wrong location
-- impedance of return path too high at high frequency
-
-5. Immunity failure instead of emission failure
-Typical causes:
-- insufficient margin in reset, clock, or communication circuits
-- weak surge / EFT protection
-- poor cable entry filtering
-- excessive sensitivity in MCU I/O or analog front end
-
-A faster debug method is to avoid changing many things at once. A better sequence is:
-
-Step 1:
-Confirm whether the dominant problem is conducted emission, radiated emission, or immunity.
-
-Step 2:
-Identify the strongest noise path:
-- source
-- coupling path
-- victim
-
-Step 3:
-Use quick verification methods before redesign:
-- temporary ferrite
-- temporary shielding
-- alternative grounding point
-- extra decoupling / RC damping
-- cable routing change
-
-Step 4:
-Only after the dominant mechanism is confirmed, modify the PCB, filter topology, grounding, or structure.
-
-In practice, many repeated failures happen because teams jump directly into “adding more filter parts” without identifying whether the problem is differential mode, common mode, near-field coupling, or structural radiation.
-
-The fastest way to fix EMC is not random rectification. It is identifying the dominant coupling mechanism first, then verifying the effectiveness of each change with controlled testing.
-`,
-  },
-  {
-    slug: "emi-filter-design",
-    seoTitle: "EMI Filter Design Mistakes That Cause Compliance Failure | Linkon Tech",
-    seoDescription:
-      "Discover common EMI filter design mistakes related to common-mode noise, differential-mode noise, filter layout, return path, and component selection.",
-    title: "EMI Filter Design Mistakes That Cause Compliance Failure",
-    desc: "Common filter-design errors in switched power systems and how they affect conducted emission results.",
-    image: "/images/blog/emi-filter-design.jpg",
-    publishedAt: "2026-04-14",
-    author: "Linkon Tech",
-    content: `
-Many EMI filter problems are not caused by the component values themselves, but by incorrect topology choice, poor placement, or misunderstanding of the real noise mechanism.
-
-A filter can look correct on the schematic and still fail badly in the lab.
-
-The most common mistakes are below.
-
-1. Treating all noise as the same
-Engineers often add an EMI filter without first separating:
-- differential-mode noise
-- common-mode noise
-
-This is a basic but critical mistake.
-
-If the dominant noise is common mode, increasing only differential-mode capacitance may have little effect.
-If the dominant noise is differential mode, changing common-mode choke selection alone may not solve the problem.
-
-2. Placing filter components too far from the noise boundary
-An EMI filter is not only a circuit function. It is also a physical boundary.
-
-Typical mistakes:
-- filter stage placed too far from the connector
-- long copper routing before or after the filter
-- noisy traces running parallel to clean input traces
-
-This allows high-frequency current to bypass the intended filter path.
-
-3. Poor return-path control
-At high frequency, current returns through the path of lowest impedance, not the path that “looks correct” on the schematic.
-
-Typical mistakes:
-- Y-capacitor return path too long
-- chassis reference not low impedance enough
-- common-mode current forced through functional ground area
-
-This often creates unstable results where one filter change helps one band but makes another band worse.
-
-4. Wrong common-mode choke selection
-A common-mode choke is not a universal solution.
-
-Typical mistakes:
-- focusing only on inductance value
-- ignoring impedance vs frequency curve
-- ignoring saturation behavior under operating current
-- choosing a part with poor performance in the actual failure band
-
-The result is often a filter that looks strong on paper but gives limited improvement at the real problem frequency.
-
-5. Ignoring parasitics and self-resonance
-Capacitors and inductors stop behaving ideally at higher frequencies.
-
-Typical mistakes:
-- assuming bigger capacitance is always better
-- using parts without checking self-resonant frequency
-- creating unwanted resonance between filter stages
-
-This can introduce a new peak instead of reducing the original one.
-
-6. PCB layout undermining the filter
-Even a correct filter design can fail if layout is weak.
-
-Typical layout problems:
-- large loop area around switching node
-- input and output of the filter too close together
-- insufficient isolation between noisy and clean sides
-- shared return impedance
-
-In many failures, the real improvement comes from layout correction rather than replacing filter components.
-
-A more effective filter-debug process is:
-
-Step 1:
-Measure and identify whether common-mode or differential-mode noise is dominant.
-
-Step 2:
-Check the real current path and physical placement of the filter.
-
-Step 3:
-Evaluate component behavior at the failure frequency, not only nominal value.
-
-Step 4:
-Verify layout coupling and return path continuity.
-
-Step 5:
-Only then optimize component values or topology.
-
-Good EMI filter design is not “adding more parts”.
-It is matching the filter structure to the actual noise source, coupling path, frequency range, and mechanical layout.
-`,
-  },
-];
+const blogPosts = getAllPosts();
 
 function LinkonTechWebsiteInner() {
   const [openMenu, setOpenMenu] = useState(null);
@@ -493,8 +320,11 @@ function LinkonTechWebsiteInner() {
   ];
   const blogMenuItems = [
     { key: "all", title: "All Articles", path: "/blog" },
-    { key: "emc-test-failure", title: "EMC Test Failure Guide", path: "/blog/emc-test-failure" },
-    { key: "emi-filter-design", title: "EMI Filter Design", path: "/blog/emi-filter-design" },
+    ...blogPosts.map((post) => ({
+      key: post.slug,
+      title: post.title,
+      path: `/blog/${post.slug}`,
+    })),
   ];
   const strengths = [
     { path: "/about", title: "Experienced EMC Engineers", desc: "We focus on practical rectification support, not just pass/fail reporting." },
@@ -1347,9 +1177,14 @@ function LinkonTechWebsiteInner() {
     );
   };
 
+  function BlogDetailWrapper() {
+    const { slug } = useParams();
+    return <BlogDetailPage slug={slug} />;
+  }
+
   const BlogDetailPage = ({ slug }) => {
 
-    const post = blogPosts.find((item) => item.slug === slug);
+    const post = getPostBySlug(slug);
 
     if (!post) {
       return (
@@ -1414,8 +1249,25 @@ function LinkonTechWebsiteInner() {
                 </div>
 
                 <article className="mt-12 max-w-none">
-                  <div className="whitespace-pre-line text-base leading-8 text-slate-700">
-                    {post.content}
+                  <div className="prose prose-slate max-w-none prose-p:mb-5 prose-h2:mt-12 prose-h2:mb-6 prose-h2:text-3xl prose-strong:text-slate-900">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        img: ({ ...props }) => (
+                          <img
+                            {...props}
+                            className="my-8 mx-auto block max-w-[700px] w-full rounded-2xl border border-slate-200 shadow-sm"
+                          />
+                        ),
+                        table: ({ ...props }) => (
+                          <div className="my-6 overflow-x-auto">
+                            <table {...props} className="w-full border-collapse text-sm" />
+                          </div>
+                        ),
+                      }}
+                    >
+                      {post.content}
+                    </ReactMarkdown>
                   </div>
                 </article>
 
@@ -1535,8 +1387,7 @@ function LinkonTechWebsiteInner() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/emc-test-failure" element={<BlogDetailPage slug="emc-test-failure" />} />
-          <Route path="/blog/emi-filter-design" element={<BlogDetailPage slug="emi-filter-design" />} />
+          <Route path="/blog/:slug" element={<BlogDetailWrapper />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path={servicePages.emcTroubleshooting.path} element={<ServicePage data={servicePages.emcTroubleshooting} />} />
           <Route path={servicePages.emcTesting.path} element={<ServicePage data={servicePages.emcTesting} />} />
