@@ -1249,7 +1249,7 @@ function LinkonTechWebsiteInner() {
                 </div>
 
                 <article className="mt-12 max-w-none">
-                  <div className="prose prose-slate max-w-none prose-p:mb-5 prose-h2:mt-12 prose-h2:mb-6 prose-h2:text-3xl prose-strong:text-slate-900">
+                  <div className="prose prose-slate max-w-none prose-p:mb-5 prose-li:mb-1 prose-ul:mb-6 prose-h2:mt-12 prose-h2:mb-6 prose-h2:text-3xl prose-strong:text-slate-900">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
