@@ -12,6 +12,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getAllPosts, getPostBySlug } from "./lib/blog";
+import PrivacyPolicyPage from "./PrivacyPolicyPage";
 
 const blogPosts = getAllPosts();
 
@@ -1485,6 +1486,7 @@ function LinkonTechWebsiteInner() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/linyuan-power-privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogDetailWrapper />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
